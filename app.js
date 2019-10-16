@@ -5,12 +5,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const passport = require('passport');
-const passportConfig = require('./passport');
 const session = require('express-session');
+const cors = require("cors");
 const index = require('./routes/index');
 const auth = require('./routes/auth');
-passportConfig(passport);
 
 const app = express();
 
@@ -43,8 +41,15 @@ app.use(session({
     maxAge: 24000 * 60 * 60 * 7
   }
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+    credentials: true
+  })
+);
 
 app.use('/', index);
 app.use('/auth', auth);
@@ -63,8 +68,8 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).send('error');
+  // res.render('error');
 });
 
 module.exports = app;
