@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const session = require('express-session');
 const cors = require("cors");
-const index = require('./routes/index');
 const auth = require('./routes/auth');
 const kakao = require('./routes/kakao');
 const books = require('./routes/books');
@@ -53,7 +52,6 @@ app.use(
   })
 );
 
-app.use('/', index);
 app.use('/api/auth', auth);
 app.use('/api/kakao', kakao);
 app.use('/api/books', books);
@@ -73,7 +71,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500).send('error');
-  // res.render('error');
 });
 
 module.exports = app;

@@ -51,9 +51,10 @@ router.get('/', async (req, res) => {
       result: 'ok'
     });
 
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -83,9 +84,10 @@ router.get('/:id', async (req, res) => {
       isEnd,
       result: 'ok'
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -102,9 +104,10 @@ router.put('/:id', async (req, res) => {
       message: '수정되었습니다.',
       result: 'ok'
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -125,9 +128,10 @@ router.delete('/:id', async (req, res) => {
       message: '삭제되었습니다.',
       result: 'ok'
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -163,9 +167,10 @@ router.post('/new/:id', async (req, res) => {
         result: 'ok'
       });
     }
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -210,9 +215,10 @@ router.get('/wish/:id', async (req, res) => {
       isEnd,
       result: 'ok'
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -245,9 +251,10 @@ router.post('/wish', async (req, res) => {
         result: 'ok'
       });
     }
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
@@ -261,9 +268,10 @@ router.delete('/wish/:id', async (req, res) => {
       message: '삭제되었습니다.',
       result: 'ok'
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 

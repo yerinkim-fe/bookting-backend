@@ -81,12 +81,11 @@ router.get('/search', async (req, res) => {
         books,
         result: 'ok'
       });
-    } else {
-      throw new Error(`${status}:${statusText}`);
     }
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send({ err });
+  } catch (error) {
+    const err = new Error('Internal Server Error');
+    err.status = 500;
+    next(err);
   }
 });
 
