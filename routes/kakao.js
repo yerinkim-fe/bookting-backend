@@ -3,11 +3,6 @@ const router = express.Router();
 const axios = require('axios');
 const { parseDate } = require('../utils');
 
-// router.get('/', booksController.getAll);
-// router.post('/new', verifyToken, articlesController.create);
-// router.put('/:article_id', verifyToken, articlesController.update);
-// router.delete('/:article_id', verifyToken, articlesController.delete);
-
 const BOOK_URL = 'https://dapi.kakao.com/v3/search/book';
 
 const kakaoApi = axios.create({
@@ -35,7 +30,7 @@ router.get('/search', async (req, res) => {
   try {
     const { query, page } = req.query;
     const books = await getBookApi(query, page);
-    const { status, statusText, data } = books;
+    const { status, data } = books;
 
     if (status === 200) {
       const {
@@ -67,7 +62,6 @@ router.get('/search', async (req, res) => {
             return {
               title,
               url,
-              // isbn,
               isbn: isbn ? isbn.split(' ')[0] : [],
               authors: typeof(authors) === 'string' ? [authors] : authors,
               pubdate: parseDate(datetime),

@@ -28,6 +28,8 @@ router.get('/', async (req, res) => {
       allBooks = await Library.find({}).skip((page * perPage)).limit(perPage);
     }
 
+    console.log(allBooks.length);
+
     const isEnd = (allBooks.length) ? false : true;
 
     const bookArr = allBooks.map(async book => {
