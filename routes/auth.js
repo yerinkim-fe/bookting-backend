@@ -5,37 +5,35 @@ const { verifyToken } = require('./middlewares/authorization');
 const User = require('../models/User');
 
 router.get('/getUser', verifyToken, (req, res) => {
-  console.log(req.headers);
   return res.send(req.user);
 });
 
 router.post('/getToken', async (req, res) => {
-  const { email, name, photoURL } = req.body;
+  const { uid, name, email, photo_url } = req.body;
 
   try {
     const user = await User.findOne({
-      email
+      uid
     });
 
     if (!user) {
-      await new User({
-        email,
+      user = await new User({
+        uid,
         name,
-        photoURL
+        email,
+        photo_url
       }).save();
     }
 
-    const payload = { email: user.email };
+    const payload = { uid };
     const token = jwt.sign(payload, process.env.YOUR_SECRET_KEY);
-    // console.log(token);
-    res.status(200).send(token);
+    res.status(200).json({
+      token,
+      id: user._id
+    });
   } catch (err) {
     return res.status(401).send({ err });
   }
-});
-
-router.get('/protected', verifyToken, (req, res) => {
-  res.send('i\'m protected');
 });
 
 module.exports = router;

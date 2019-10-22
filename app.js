@@ -9,6 +9,8 @@ const session = require('express-session');
 const cors = require("cors");
 const index = require('./routes/index');
 const auth = require('./routes/auth');
+const kakao = require('./routes/kakao');
+const books = require('./routes/books');
 
 const app = express();
 
@@ -52,7 +54,9 @@ app.use(
 );
 
 app.use('/', index);
-app.use('/auth', auth);
+app.use('/api/auth', auth);
+app.use('/api/kakao', kakao);
+app.use('/api/books', books);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

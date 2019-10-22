@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const { Types } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
-  email: {
+  uid: {
     type: String,
     required: true
   },
@@ -9,7 +10,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  photoURL: {
+  email: {
+    type: String,
+    required: true
+  },
+  photo_url: {
     type: String,
   }
 });
