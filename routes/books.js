@@ -191,16 +191,17 @@ router.get('/wish/:id', async (req, res) => {
         _id: result.book_id
       });
 
-      const obj = { owner, book };
+      const obj = { owner, book, wishId: wish._id };
 
       return obj;
     });
 
     const result = await Promise.all(bookArr);
 
-    let books = Object.values(result.reduce((acc, {owner, book}) => {
+    let books = Object.values(result.reduce((acc, {owner, book, wishId}) => {
       acc[owner] = acc[owner] || {owner, book: []};
       acc[owner].book.push(book);
+      acc[owner].wishId = wishId;
       return acc;
     }, {}));
 
@@ -244,6 +245,22 @@ router.post('/wish', async (req, res) => {
         result: 'ok'
       });
     }
+  } catch (err) {
+    console.error(err);
+    return res.status(401).send({ err });
+  }
+});
+
+router.delete('/wish/:id', async (req, res) => {
+  try {
+    const { selectedBook } = req.body;
+
+    await Wish.findOneAndDelete({ _id: selectedBook });
+
+    res.status(200).json({
+      message: '삭제되었습니다.',
+      result: 'ok'
+    });
   } catch (err) {
     console.error(err);
     return res.status(401).send({ err });
