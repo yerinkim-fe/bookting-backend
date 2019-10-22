@@ -9,17 +9,36 @@ const perPage = 10;
 
 router.get('/', async (req, res) => {
   try {
-    const { page } = req.query;
+    const { page, query } = req.query;
 
-    const myBooks = await Library.find({}).skip((page * perPage)).limit(perPage);
+    let allBooks;
 
-    const isEnd = (myBooks.length) ? false : true;
+    if (query !== '') {
+      const searchedBooks = await Book.find({
+        $or:[ {title: { $regex: query }}, {authors: { $regex: query }} ]
+      });
 
-    const bookArr = myBooks.map(async book => {
+      const bookArr = searchedBooks.map(async book => {
+        return await Library.findOne({ book_id: book._id });
+      });
+
+      const result = await Promise.all(bookArr);
+      allBooks = result.filter(book => book !== null);
+    } else {
+      allBooks = await Library.find({}).skip((page * perPage)).limit(perPage);
+    }
+
+    const isEnd = (allBooks.length) ? false : true;
+
+    const bookArr = allBooks.map(async book => {
       const result = await Book.findOne({
         _id: book.book_id
       });
-      const obj = { ...result._doc, status: book.status, lib_id: book._id };
+      const owner = await User.findOne({
+        _id: book.user_id
+      });
+
+      const obj = { ...result._doc, owner, status: book.status, lib_id: book._id };
 
       return obj;
     });
@@ -31,6 +50,7 @@ router.get('/', async (req, res) => {
       isEnd,
       result: 'ok'
     });
+
   } catch (err) {
     console.error(err);
     return res.status(401).send({ err });
@@ -95,6 +115,12 @@ router.delete('/:id', async (req, res) => {
 
     await Library.findOneAndDelete({ user_id: id, book_id: selectedBook });
 
+    const result = await Library.find({ book_id: selectedBook });
+
+    if (!result) {
+      await Book.findOneAndDelete({ _id: selectedBook });
+    }
+
     res.status(200).json({
       message: '삭제되었습니다.',
       result: 'ok'
@@ -110,7 +136,7 @@ router.post('/new/:id', async (req, res) => {
     const { id } = req.params;
     const { selectedBook } = req.body;
 
-    const newBook = await Book.findOne({ isbn: selectedBook.isbn });
+    let newBook = await Book.findOne({ isbn: selectedBook.isbn });
 
     if (!newBook) {
       newBook = await new Book(selectedBook).save();
