@@ -170,7 +170,6 @@ router.get('/wish/:id', async (req, res) => {
       return obj;
     });
 
-
     const result = await Promise.all(bookArr);
 
     let books = Object.values(result.reduce((acc, {owner, book}) => {
