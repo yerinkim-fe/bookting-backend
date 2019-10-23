@@ -10,6 +10,7 @@ const cors = require("cors");
 const auth = require('./routes/auth');
 const kakao = require('./routes/kakao');
 const books = require('./routes/books');
+const chats = require('./routes/chats');
 
 const app = express();
 
@@ -43,7 +44,6 @@ app.use(session({
   }
 }));
 
-
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -55,8 +55,7 @@ app.use(
 app.use('/api/auth', auth);
 app.use('/api/kakao', kakao);
 app.use('/api/books', books);
-
-
+app.use('/api/chats', chats);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
