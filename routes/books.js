@@ -7,7 +7,7 @@ const Wish = require('../models/Wish');
 const jwt = require('jsonwebtoken');
 const perPage = 10;
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const { page, query } = req.query;
 
@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { page } = req.query;
@@ -93,7 +93,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { selectedBook } = req.body;
@@ -113,7 +113,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { selectedBook } = req.body;
@@ -137,7 +137,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.post('/new/:id', async (req, res) => {
+router.post('/new/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { selectedBook } = req.body;
@@ -176,7 +176,7 @@ router.post('/new/:id', async (req, res) => {
   }
 });
 
-router.get('/wish/:id', async (req, res) => {
+router.get('/wish/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { page } = req.query;
@@ -224,7 +224,7 @@ router.get('/wish/:id', async (req, res) => {
   }
 });
 
-router.post('/wish', async (req, res) => {
+router.post('/wish', async (req, res, next) => {
   try {
     const clientToken = req.headers['authorization'].split(' ')[1];
     const decoded = jwt.verify(clientToken, process.env.YOUR_SECRET_KEY);
@@ -260,7 +260,7 @@ router.post('/wish', async (req, res) => {
   }
 });
 
-router.delete('/wish/:id', async (req, res) => {
+router.delete('/wish/:id', async (req, res, next) => {
   try {
     const { selectedBook } = req.body;
 
