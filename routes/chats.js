@@ -48,6 +48,19 @@ router.get('/:user_id/list', async (req, res, next) => {
       }
     });
 
+    const userArr = chats.map(async (item, index) => {
+      const partners = item.users.filter(user => String(user) !== user_id);
+      const user = await User.findOne({ _id: partners[0] });
+
+      return user;
+    });
+
+    const users = await Promise.all(userArr);
+
+    users.forEach((user, index) => {
+      chats[index].messages[0].author = user;
+    });
+
     res.status(200).json({
       chats,
       result: 'ok'
