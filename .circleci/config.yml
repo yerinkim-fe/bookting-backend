@@ -34,9 +34,9 @@ jobs:
           name: Deploy to env
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                eb deploy backend
+                eb deploy Backend-env
             else
-                eb deploy backend-development
+                eb deploy Backend-env-development
             fi
 workflows:
   version: 2
