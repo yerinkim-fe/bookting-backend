@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken');
 const { verifyToken } = require('./middlewares/authorization');
 const User = require('../models/User');
 
-router.get('/getUser', verifyToken, (req, res) => {
+router.get('/getUser', verifyToken, (req, res, next) => {
   return res.send(req.user);
 });
 
-router.post('/getToken', async (req, res) => {
+router.post('/getToken', async (req, res, next) => {
   const { uid, name, email, photo_url } = req.body;
 
   try {
