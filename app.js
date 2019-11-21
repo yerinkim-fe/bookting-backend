@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -11,6 +12,8 @@ const auth = require('./routes/auth');
 const kakao = require('./routes/kakao');
 const books = require('./routes/books');
 const chats = require('./routes/chats');
+
+const CLIENT_URL = (process.env.NODE_ENV === 'development') ? 'http://localhost:3000' : 'https://bookting.yerinsite.com';
 
 const app = express();
 
@@ -46,7 +49,7 @@ app.use(session({
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: CLIENT_URL,
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
     credentials: true
   })
@@ -71,7 +74,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500).send('error');
+  res.status(err.status || 500).json({ status: `${err.status}`, message: `${err.message}`});
 });
 
 module.exports = app;
