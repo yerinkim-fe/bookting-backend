@@ -5,7 +5,9 @@ const { verifyToken } = require('./middlewares/authorization');
 const User = require('../models/User');
 
 router.get('/getUser', verifyToken, (req, res, next) => {
-  return res.send(req.user);
+  return res.status(200).json({
+    user: res.user
+  });
 });
 
 router.post('/getToken', async (req, res, next) => {

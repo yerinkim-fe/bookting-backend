@@ -6,12 +6,12 @@ const verifyToken = async (req, res, next) => {
     const clientToken = req.headers['authorization'].split(' ')[1];
     const decoded = jwt.verify(clientToken, process.env.YOUR_SECRET_KEY);
 
-
     const user = await User.findOne({
       uid: decoded.uid
     });
 
     if (user) {
+      res.user = user;
       next();
     } else {
       throw new Error();

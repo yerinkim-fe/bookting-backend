@@ -5,7 +5,6 @@ module.exports = io => {
     });
 
     socket.on('requestChat', chat_id => {
-      // socket.broadcast.to(chat_id).emit('join');
       socket.join(chat_id);
     });
 

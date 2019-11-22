@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { Types } = mongoose.Schema;
 
 const bookSchema = new mongoose.Schema({
   title: {

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { Types } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   uid: {

@@ -7,9 +7,6 @@ const Message = require('../models/Message');
 router.get('/:chat_id', async (req, res, next) => {
   try {
     const { chat_id } = req.params;
-    const { user_id } = req.query;
-
-    const user = await User.findOne({ _id: user_id }).select({ name: 1, photo_url: 1, _id: 1 });
 
     const chats = await Chat.findOne({ _id: chat_id }).populate({
       path: 'messages',
@@ -22,7 +19,6 @@ router.get('/:chat_id', async (req, res, next) => {
     });
 
     res.status(200).json({
-      user,
       chats: chats.messages,
       result: 'ok'
     });
